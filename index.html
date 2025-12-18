@@ -23,10 +23,10 @@
     tg.expand();
 
     function donateTON() {
-      const address = UQBOekw_iNJGJNSZgTZkHTjOB_FqsGOOS_VG8n0oQzwitABM; 
+      const address = "UQBOekw_iNJGJNSZgTZkHTjOB_FqsGOOS_VG8n0oQzwitABM"; 
   const amount = 0.5; 
 
-  const tonLink = ton://transfer/${address}?amount=${amount * 1e9};
+  const tonLink = `ton://transfer/${address}?amount=${amount * 1e9}`;
 
   window.open(tonLink, "_blank");
     }
