@@ -23,7 +23,12 @@
     tg.expand();
 
     function donateTON() {
-      alert("Кнопка TON работает");
+      const address = UQBOekw_iNJGJNSZgTZkHTjOB_FqsGOOS_VG8n0oQzwitABM; 
+  const amount = 0.5; 
+
+  const tonLink = ton://transfer/${address}?amount=${amount * 1e9};
+
+  window.open(tonLink, "_blank");
     }
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
