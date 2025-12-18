@@ -48,7 +48,7 @@
       font-weight: bold;
     }
   </style>
-</head>
+<<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>/head>
 <body>
 
 <h1>🚀 MK</h1>
@@ -57,7 +57,9 @@
 <div class="card">
   <button class="stars" onclick="donateStars()">⭐ Донат Stars</button>
   <button class="ton" onclick="donateTON()">💎 Донат TON</button>
-</div>
+<p id="wallet"></p>
+</div><div id="ton-connect"></div>
+<p id="wallet"></p>
 
 <script>
   const tg = Telegram.WebApp;
@@ -70,7 +72,20 @@
   function donateTON() {
     window.open("ton://transfer/UQBOekw_iNJGJNSZgTZkHTjOB_FqsGOOS_VG8n0oQzwitABM?amount=1000000000");
   }
-</script>
+<const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+  manifestUrl: "https://mk-app.vercel.app/tonconnect-manifest.json"
+});
+
+tonConnectUI.render({
+  container: document.getElementById("ton-connect")
+});
+
+tonConnectUI.onStatusChange(wallet => {
+  if (wallet) {
+    document.getElementById("wallet").innerText =
+      "Кошелёк подключён: " + wallet.account.address;
+  }
+});/script>
 
 </body>
   </html>
