@@ -2,37 +2,62 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>MK Telegram Mini App</title>
+  <title>MK Mini App</title>
 
   <!-- Telegram WebApp -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <!-- TON Connect -->
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    #donate-zone {
+      position: relative;
+      z-index: 10;
+    }
+
+    #ton-connect {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 
 <body>
 
-  <!-- ЗАГОЛОВОК -->
   <h1>🚀 MK</h1>
   <p>Telegram Mini App</p>
 
-  <!-- БАЛАНС -->
   <p>💰 Баланс: <span id="balance">0</span> MK</p>
 
-  <!-- КНОПКА ДОНАТА -->
-  <button onclick="donateTON()">💎 Донат TON</button>
+  <!-- DONATE -->
+  <div id="donate-zone">
+    <button onclick="donateTON()">💎 Донат TON</button>
+  </div>
 
   <!-- TON CONNECT -->
+  <button onclick="openWallet()">🔗 Подключить кошелёк</button>
   <div id="ton-connect"></div>
   <p id="wallet"></p>
 
-  <!-- JS ВСЕГДА В КОНЦЕ BODY -->
+  <!-- SCRIPT -->
   <script>
     const tg = Telegram.WebApp;
     tg.expand();
 
-    // ===== БАЛАНС =====
+    // ===== BALANCE =====
     let balance = localStorage.getItem("mk_balance");
     if (!balance) {
       balance = 0;
@@ -48,13 +73,13 @@
 
     // ===== DONATE TON =====
     function donateTON() {
-      const address = "UQBOekw_iNJGJNSZgTZkHTjOB_FqsGOOS_VG8n0oQzwitABM"; 
+      const address = "UQBOekw_iNJGJNSZgTZkHTjOB_FqsGOOS_VG8n0oQzwitABM"; // ТВОЙ TON АДРЕС
       const tonAmount = 0.5;
 
       const tonLink = ton://transfer/${address}?amount=${tonAmount * 1e9};
       window.open(tonLink, "_blank");
 
-      // 1 TON = 100 MK (пример)
+      // начисляем MK (пример)
       addBalance(50);
     }
 
@@ -63,9 +88,9 @@
       manifestUrl: "https://mk-app.vercel.app/tonconnect-manifest.json"
     });
 
-    tonConnectUI.render({
-      container: document.getElementById("ton-connect")
-    });
+    function openWallet() {
+      tonConnectUI.openModal();
+    }
 
     tonConnectUI.onStatusChange(wallet => {
       if (wallet) {
