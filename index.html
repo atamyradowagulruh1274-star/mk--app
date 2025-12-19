@@ -1,36 +1,64 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MK App</title>
+  <meta charset="UTF-8">
+  <title>MK Telegram Mini App</title>
 
+  <!-- Telegram WebApp -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- TON Connect -->
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 </head>
 
 <body>
 
+  <!-- ЗАГОЛОВОК -->
   <h1>🚀 MK</h1>
   <p>Telegram Mini App</p>
 
+  <!-- БАЛАНС -->
+  <p>💰 Баланс: <span id="balance">0</span> MK</p>
+
+  <!-- КНОПКА ДОНАТА -->
   <button onclick="donateTON()">💎 Донат TON</button>
 
+  <!-- TON CONNECT -->
   <div id="ton-connect"></div>
   <p id="wallet"></p>
 
+  <!-- JS ВСЕГДА В КОНЦЕ BODY -->
   <script>
     const tg = Telegram.WebApp;
     tg.expand();
 
-    function donateTON() {
-      const address = "UQBOekw_iNJGJNSZgTZkHTjOB_FqsGOOS_VG8n0oQzwitABM"; 
-  const amount = 0.5; 
+    // ===== БАЛАНС =====
+    let balance = localStorage.getItem("mk_balance");
+    if (!balance) {
+      balance = 0;
+      localStorage.setItem("mk_balance", balance);
+    }
+    document.getElementById("balance").innerText = balance;
 
-  const tonLink = `ton://transfer/${address}?amount=${amount * 1e9}`;
-
-  window.open(tonLink, "_blank");
+    function addBalance(amount) {
+      balance = parseInt(balance) + amount;
+      localStorage.setItem("mk_balance", balance);
+      document.getElementById("balance").innerText = balance;
     }
 
+    // ===== DONATE TON =====
+    function donateTON() {
+      const address = "UQBOekw_iNJGJNSZgTZkHTjOB_FqsGOOS_VG8n0oQzwitABM"; 
+      const tonAmount = 0.5;
+
+      const tonLink = ton://transfer/${address}?amount=${tonAmount * 1e9};
+      window.open(tonLink, "_blank");
+
+      // 1 TON = 100 MK (пример)
+      addBalance(50);
+    }
+
+    // ===== TON CONNECT =====
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
       manifestUrl: "https://mk-app.vercel.app/tonconnect-manifest.json"
     });
@@ -48,4 +76,4 @@
   </script>
 
 </body>
-</html>
+  </html>
